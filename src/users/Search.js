@@ -15,6 +15,8 @@ export class Search extends Component {
     this.setState({ text: "" });
   };
   render() {
+    const { usersLoaded, clearUsers } = this.props;
+    const { text } = this.state;
     return (
       <div>
         <form onSubmit={this.onSubmit} className='form'>
@@ -22,7 +24,7 @@ export class Search extends Component {
             type='text'
             name='text'
             placeholder='Search users.'
-            value={this.state.text}
+            value={text}
             onChange={this.onChange}
           />
           <input
@@ -31,6 +33,11 @@ export class Search extends Component {
             className='btn btn-dark btn-block'
           />
         </form>
+        {usersLoaded && (
+          <button className='btn btn-light btn-block' onClick={clearUsers}>
+            Clear
+          </button>
+        )}
       </div>
     );
   }
