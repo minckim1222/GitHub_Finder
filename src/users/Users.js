@@ -1,6 +1,6 @@
 import React from "react";
 import UserItem from "./UserItem";
-import Spinner from "./Spinner";
+import Spinner from "../Spinner";
 function Users(props) {
   if (props.loading) {
     return <Spinner />;
