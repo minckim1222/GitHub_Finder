@@ -1,8 +1,11 @@
-import React, { Component } from "react";
-
+import React, { Fragment, Component } from "react";
+import Spinner from "../Spinner";
+import { Link } from "react-router-dom";
+import Repos from "../repos/Repos";
 export class User extends Component {
   componentDidMount() {
     this.props.getUser(this.props.match.params.login);
+    this.props.getUserRepos(this.props.match.params.login);
   }
   render() {
     const {
@@ -13,6 +16,7 @@ export class User extends Component {
       blog,
       login,
       html_url,
+      company,
       followers,
       following,
       public_repos,
@@ -21,7 +25,77 @@ export class User extends Component {
     } = this.props.user;
 
     const { loading } = this.props;
-    return <div>{name}</div>;
+    if (loading) {
+      return <Spinner />;
+    }
+    return (
+      <Fragment>
+        <Link to='/' className={"btn btn-light"}>
+          Back to search
+        </Link>
+        Hireable:{" "}
+        {hireable ? (
+          <i className='fa fa-check text-success' />
+        ) : (
+          <i className='fa fa-times-circle text-danger' />
+        )}
+        <div className='card grid-2'>
+          <div className='all-center'>
+            <img
+              src={avatar_url}
+              className='round-img'
+              alt='Profile Avatar'
+              style={{ width: "150px" }}
+            />
+            <h1>{name}</h1>
+            <p>Location : {location}</p>
+          </div>
+          <div>
+            {bio && (
+              <Fragment>
+                <h3>Bio</h3>
+                <p>{bio}</p>
+              </Fragment>
+            )}
+            <a href={html_url} className='btn btn-dark my-1'>
+              Visit GitHub Page
+            </a>
+            <ul>
+              <li>
+                {login && (
+                  <Fragment>
+                    <strong>Username: {login}</strong>
+                  </Fragment>
+                )}
+              </li>
+              <li>
+                {company && (
+                  <Fragment>
+                    <strong>Company: {company}</strong>
+                  </Fragment>
+                )}
+              </li>
+              <li>
+                {blog && (
+                  <Fragment>
+                    <strong>Website: {blog}</strong>
+                  </Fragment>
+                )}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className='card text-center'>
+          <div className='badge badge-dark'>Followers: {followers}</div>
+          <div className='badge badge-danger'>Following: {following}</div>
+          <div className='badge badge-light'>Public Repos: {public_repos}</div>
+          <div className='badge badge-success'>
+            Public Gists: {public_gists}
+          </div>
+        </div>
+        <Repos repos={this.props.repos} />
+      </Fragment>
+    );
   }
 }
 
