@@ -1,22 +1,16 @@
-import React, { useState } from "react";
-
-const Search = ({
-  showAlert,
-  searchUsers,
-  clearUsers,
-  usersLoaded,
-  onChange,
-  onSubmit
-}) => {
+import React, { useState, useContext } from "react";
+import GithubContext from "../context/github/githubContext";
+const Search = ({ showAlert }) => {
+  const githubContext = useContext(GithubContext);
   const [text, setText] = useState("");
-  onChange = e => setText(e.target.value);
+  const onChange = e => setText(e.target.value);
 
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
     if (text === "") {
       showAlert("Please enter a username", "alert-light");
     } else {
-      searchUsers(text);
+      githubContext.searchUsers(text);
       setText("");
     }
   };
@@ -36,8 +30,11 @@ const Search = ({
           className='btn btn-dark btn-block'
         />
       </form>
-      {usersLoaded && (
-        <button className='btn btn-light btn-block' onClick={clearUsers}>
+      {githubContext.usersLoaded && (
+        <button
+          className='btn btn-light btn-block'
+          onClick={githubContext.clearUsers}
+        >
           Clear
         </button>
       )}
