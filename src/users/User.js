@@ -3,9 +3,9 @@ import Spinner from "../Spinner";
 import { Link } from "react-router-dom";
 import Repos from "../repos/Repos";
 import GithubContext from "../context/github/githubContext";
-const User = ({ getUserRepos, match, repos }) => {
+const User = ({ match }) => {
   const githubContext = useContext(GithubContext);
-  const { getUser, loading, user } = githubContext;
+  const { getUser, loading, user, getUserRepos } = githubContext;
 
   useEffect(() => {
     getUser(match.params.login);
@@ -95,7 +95,7 @@ const User = ({ getUserRepos, match, repos }) => {
         <div className='badge badge-light'>Public Repos: {public_repos}</div>
         <div className='badge badge-success'>Public Gists: {public_gists}</div>
       </div>
-      <Repos repos={repos} />
+      <Repos />
     </Fragment>
   );
 };

@@ -50,6 +50,16 @@ const GithubState = props => {
     );
     dispatch({ type: GET_USER, payload: res.data });
   };
+  const getUserRepos = async userName => {
+    setLoading();
+    const res = await axios.get(
+      `https://api.github.com/users/${userName}/repos?per_page=5&sort=author-date&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET_KEY}`
+    );
+    dispatch({
+      type: GET_REPOS,
+      payload: res.data
+    });
+  };
   return (
     <GithubContext.Provider
       value={{
@@ -60,7 +70,8 @@ const GithubState = props => {
         usersLoaded: state.usersLoaded,
         searchUsers,
         clearUsers,
-        getUser
+        getUser,
+        getUserRepos
       }}
     >
       {props.children}
